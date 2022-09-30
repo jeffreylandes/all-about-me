@@ -17,8 +17,8 @@ public class Weather {
     private String longitudeUrlParam;
 
     public Weather(Location location) {
-        this.latitudeUrlParam = getLatitudeParam(location.latitude);
-        this.longitudeUrlParam = getLongitudeParam(location.longitude);
+        this.latitudeUrlParam = getLatitudeParam(location.latitude());
+        this.longitudeUrlParam = getLongitudeParam(location.longitude());
     } 
 
     private static String getLatitudeParam(Float startDate) {
