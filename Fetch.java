@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class Fetch {
+
+    private final String DEFAULT_URL = "https://api.weather.gov/points/38.8894,-77.0352";
+    private final String USER_AGENT = "personal-project, landesjeffrey@gmail.com";
+
     void printError(String message) {
         System.out.println(message);
     }
     void fetchWeather() {
-        String DEFAULT_URL = "https://api.weather.gov/points/38.8894,-77.0352";
         try {
             URL obj = new URL(DEFAULT_URL);
             HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("User-Agent", USER_AGENT);
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
