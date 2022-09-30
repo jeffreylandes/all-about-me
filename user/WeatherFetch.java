@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Weather {
+public class WeatherFetch {
 
     private static final String BASE_FETCH_URL = "https://archive-api.open-meteo.com/v1/era5?";
     private static final String LOCATION_PARAM = "&timezone=Europe/Berlin";
@@ -16,7 +16,7 @@ public class Weather {
     private String latitudeUrlParam;
     private String longitudeUrlParam;
 
-    public Weather(Location location) {
+    public WeatherFetch(Location location) {
         this.latitudeUrlParam = getLatitudeParam(location.latitude());
         this.longitudeUrlParam = getLongitudeParam(location.longitude());
     } 
@@ -54,7 +54,7 @@ public class Weather {
         return String.valueOf(day);
     }
 
-    public void getWeatherFromDay(int year, int month, int day) {
+    public void fetchWeatherFromDay(int year, int month, int day) {
         String yearString = String.valueOf(year);
         String monthString = getFullString(month);
         String dayString = getFullString(day);
@@ -92,7 +92,7 @@ public class Weather {
 
     public static void main(String... args) {
         Location location = new Location(52.5f, 13.5f);
-        Weather weather = new Weather(location);
-        weather.getWeatherFromDay(2021, 1, 30);
+        WeatherFetch weatherFetch = new WeatherFetch(location);
+        weatherFetch.fetchWeatherFromDay(2021, 1, 30);
     }
 }
