@@ -11,15 +11,30 @@ public class WeatherFetch {
 
     private static final String BASE_FETCH_URL = "https://archive-api.open-meteo.com/v1/era5?";
     private static final String LOCATION_PARAM = "&timezone=Europe/Berlin";
-    private static final String FREQUENCY_PARAM = "&daily=temperature_2m_max";
+    private static final String FREQUENCY_PARAM = "&daily=temperature_2m_max,temperature_2m_min";
 
-    private String latitudeUrlParam;
-    private String longitudeUrlParam;
+    private float latitude = 0.0f;
+    private float longitude = 0.0f;
+
+    public WeatherFetch() {}
 
     public WeatherFetch(Location location) {
-        this.latitudeUrlParam = getLatitudeParam(location.latitude());
-        this.longitudeUrlParam = getLongitudeParam(location.longitude());
+        this.latitude = location.latitude();
+        this.longitude = location.longitude();
     } 
+
+    public WeatherFetch(Float latitude, Float longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    } 
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 
     private static String getLatitudeParam(Float startDate) {
         return "&latitude=" + startDate;
@@ -38,9 +53,11 @@ public class WeatherFetch {
     }
 
     private URL buildFinalUrl(String startDate, String endDate) throws MalformedURLException {
+        String latitudeUrl = getLatitudeParam(this.latitude);
+        String longitudeUrl = getLongitudeParam(this.longitude);
         String urlString = BASE_FETCH_URL + 
             startDate + endDate + 
-            this.latitudeUrlParam + this.longitudeUrlParam + 
+            latitudeUrl + longitudeUrl + 
             FREQUENCY_PARAM + LOCATION_PARAM;
         System.out.print("Final url: " + urlString);
         URL url = new URL(urlString);
