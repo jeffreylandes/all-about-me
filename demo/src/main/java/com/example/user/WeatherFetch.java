@@ -1,9 +1,6 @@
 package com.example.user;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -15,6 +12,12 @@ public class WeatherFetch {
 
     private float latitude = 0.0f;
     private float longitude = 0.0f;
+
+    class WeatherFetchResult {
+        float latitude;
+        float longitude;
+        WeatherFetchResult() {}
+    }
 
     public WeatherFetch() {}
 
@@ -83,22 +86,11 @@ public class WeatherFetch {
         String endDateUrlParam = getEndDateParam(endDate);
 
         try {
+
             URL fetchUrl = buildFinalUrl(startDateUrlParam, endDateUrlParam);
-            HttpURLConnection conn = (HttpURLConnection) fetchUrl.openConnection();
-            conn.setRequestMethod("GET");
+            WeatherFetchResult result = Fetch.getGjsonClassResponse(fetchUrl, WeatherFetchResult.class);
 
-            int responseCode = conn.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) throw new Error("Unsuccessful request");
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-
-            System.out.print(response);
+            System.out.println(result.latitude);
 
         } catch (MalformedURLException e) {
             System.out.print("Unable to build fetch url: " + e);
